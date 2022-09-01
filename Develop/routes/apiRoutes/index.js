@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { v4: uuidv4 } = require('uuid');
-const {createNewNote, update} = require("./routes/apiRoutes/notes.js");
-const {notes} = require("./db/db.json");
+const {createNote, update} = require("./notes.js");
+const {notes} = require("../../db/db.json");
 
 // show all notes in json data
 router.get("/notes", (req, res) => {
@@ -11,12 +11,14 @@ router.get("/notes", (req, res) => {
 
   router.post("/notes", (req, res) => {
     req.body.id = uuidv4();
-    const newNote = createNewNote(req.body, notes);
+    console.log("notes:", notes)
+    const newNote = createNote(req.body, notes);
     res.json(newNote);
   });  
 
   router.delete("/notes/:id" , (req, res) => {
     const params = req.params.id
+    console.log('delete:', params)
     update(params, notes);
     res.redirect('');
   });
